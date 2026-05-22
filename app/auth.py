@@ -26,10 +26,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # Funções de senha 
 
 def hash_senha(senha: str):
-    return pwd_context,hash(senha)
+    return pwd_context.hash(senha)
 
-def verificar_senha(senha: str, senha_hash: str):
-    return pwd_context.verify(senha, senha_hash)
+def verificar_senha(senha: str, senah_hash: str):
+    return pwd_context.verify(senha, senah_hash)
 
 # Funções do tokem JWT
 
@@ -38,7 +38,7 @@ def criar_token(dados: dict):
     payload = dados.copy()
 
     #Define qaundo token expira
-    expira = datetime.now(timezone.utc) + timedelta(minutes=ACCES_TOKEN_EXPIRE_MINUTE)
+    expira = datetime.now(timezone.utc) + timedelta(minutes=int(ACCES_TOKEN_EXPIRE_MINUTE))
     payload.update({"exp": expira})
 
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
@@ -76,3 +76,9 @@ def get_usuario_logado(request: Request):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token invalido ou expirado"
         )
+    
+def get_usuario_opcional(request: Request):
+    try:
+        return get_usuario_logado(request)
+    except HTTPException:
+        return None

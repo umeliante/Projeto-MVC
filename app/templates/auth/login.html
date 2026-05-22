@@ -7,11 +7,19 @@
 </head>
 <body>
     <h1>Entrar no Sistema</h1>
+    <!-- Exibir mensagem de erro, se houver -->
+    {% if erro %}
+        <p style="color: red;">{{ erro }}</p>
+    {% endif %}
+    <!-- Exibir mensagem de sucesso após cadastro -->
+    {% if request.query_params.get("cadastro") == "ok" %}
+        <p style="color: green;">Cadastro realizado! Faça login.</p>
+    {% endif %}
 
-    <form action="auth/cadastro" method="post">
+    <form action="/auth/login" method="post">
         Email: <input type="email" name="email" required>
          <br><br>
-         Senha <input type="senha" name="senha" required>
+         Senha <input type="password" name="senha" required>
          <br><br>
          <button type="submit">Entrar</button>
     </form>
