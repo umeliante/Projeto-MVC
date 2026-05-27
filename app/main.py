@@ -4,18 +4,21 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from app.auth import get_usuario_opcional
+
 from app.controllers import auth_controller
+from app.controllers import usuario_controller
 
 app = FastAPI(title="Sistema de Ponto de venda")
 
-#Configurar a pasta para servir os arquivo estáticos (CSS, JS e IMG)
+#Configurar a pasta para servir os arquivos estáticos (CSS, JS e IMG)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-#Configurar o jinja2 para rederizar os HTML
+#Configurar o jinja2 para renderizar os HTML
 templates = Jinja2Templates(directory="app/templates")
 
 #Inclui os routers dos controladores
 app.include_router(auth_controller.router)
+app.include_router(usuario_controller.router)
 
 
 @app.get("/")
